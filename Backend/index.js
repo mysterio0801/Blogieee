@@ -3,11 +3,14 @@ const mongoose = require("mongoose");
 const app = express();
 const port = process.env.port || 5000;
 
-mongoose.connect("mongodb://localhost:27017/myapp", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useCreateIndex: true,
-});
+mongoose.connect(
+  "mongodb+srv://mysterio_08:Mysterio0801@cluster0.k46pc.mongodb.net/myapp?retryWrites=true&w=majority",
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+  }
+);
 
 const connection = mongoose.connection;
 connection.once("open", () => {
