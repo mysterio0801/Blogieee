@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:blogiee/screens/signup_screen.dart';
 import 'package:flutter/material.dart';
 
 class WelcomeSceen extends StatefulWidget {
@@ -34,11 +35,11 @@ class _WelcomeSceenState extends State<WelcomeSceen> {
                 ),
               ),
               SizedBox(height: 40.0),
-              boxContainer("assets/google.png", "Sign up with Google"),
+              boxContainer("assets/google.png", "Sign up with Google", null),
               SizedBox(height: 20.0),
-              boxContainer("assets/fb.png", "Sign up with Facebook"),
+              boxContainer("assets/fb.png", "Sign up with Facebook", null),
               SizedBox(height: 20.0),
-              boxContainer("assets/icons8-important-mail-96 (4) - Copy.png", "Sign up with Email"),
+              boxContainer("assets/icons8-important-mail-96 (4) - Copy.png", "Sign up with Email", onEmailClick),
               SizedBox(height: 10.0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -58,8 +59,15 @@ class _WelcomeSceenState extends State<WelcomeSceen> {
       ),
     );
   }
-  Widget boxContainer(String path, String text) {
-    return Container(
+
+  onEmailClick(){
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => SignupScreen()));
+  }  
+
+  Widget boxContainer(String path, String text, onClick) {
+    return FlatButton(
+      onPressed: onClick,
+      child: Container(
       height: 60.0,
       width: MediaQuery.of(context).size.width - 140,
       child: Card(
@@ -80,6 +88,7 @@ class _WelcomeSceenState extends State<WelcomeSceen> {
           ),
         ),
       ),
+        ),
     );
   }
 }

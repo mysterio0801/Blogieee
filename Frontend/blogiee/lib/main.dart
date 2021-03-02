@@ -1,4 +1,5 @@
 import 'package:blogiee/screens/welcome_screen.dart';
+import 'package:blogiee/utilities/constants.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -10,6 +11,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      theme: OurTheme().buildTheme(),
        home: WelcomeSceen(),
     );
   }
