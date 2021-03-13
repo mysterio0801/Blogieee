@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:blogiee/NetworkHandler.dart';
+import 'package:blogiee/screens/signup_screen.dart';
 import 'package:flutter/material.dart';
 
 bool _isPasswordVisible = true;
@@ -75,6 +76,34 @@ class _SigninScreenState extends State<SigninScreen> {
                       },
                     ),
                   ),
+                ),
+                SizedBox(height: 20.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Text(
+                      "Forgot Password?",
+                      style: TextStyle(
+                        color: Colors.blue,
+                        fontSize: 15.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(width: 100.0),
+                    InkWell(
+                      onTap: (){
+                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => SignupScreen()));
+                      },
+                      child: Text(
+                        "New User?",
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontSize: 15.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
                 SizedBox(height: 40.0),
                 RaisedButton(
