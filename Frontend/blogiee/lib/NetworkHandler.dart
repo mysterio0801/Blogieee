@@ -12,16 +12,14 @@ class NetworkHandler{
     }
   }
 
-  Future<dynamic> post(String url, Map<String, String> body) async{
+  Future<http.Response> post(String url, Map<String, String> body) async{
     url = formater(url);
     var response  = await http.post(
       url,
       headers: {"Content-type" : "application/json"},
       body: json.encode(body),
     );
-    if(response.statusCode == 200 || response.statusCode == 201){
-      return response;
-    }
+    return response;
   }
 
   String formater(String url){

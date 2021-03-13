@@ -1,7 +1,7 @@
 import 'dart:ui';
 import 'package:blogiee/screens/signin_screen.dart';
 import 'package:blogiee/screens/signup_screen.dart';
-import 'package:blogiee/screens/testing.dart';
+import 'package:blogiee/screens/homepage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:http/http.dart' as http;
@@ -45,9 +45,7 @@ class _WelcomeSceenState extends State<WelcomeSceen> {
               ),
               SizedBox(height: 40.0),
               boxContainer("assets/google.png", "Sign up with Google", null),
-              SizedBox(height: 20.0),
               boxContainer("assets/fb.png", "Sign up with Facebook", onFBLogin),
-              SizedBox(height: 20.0),
               boxContainer("assets/icons8-important-mail-96 (4) - Copy.png", "Sign up with Email", onEmailClick),
               SizedBox(height: 10.0),
               Row(
@@ -101,7 +99,7 @@ class _WelcomeSceenState extends State<WelcomeSceen> {
     }
     if(_isLogin){
       print('true');
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) => Testing()));
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomePage()));
     }
   }
 
@@ -110,7 +108,7 @@ class _WelcomeSceenState extends State<WelcomeSceen> {
   }  
 
   Widget boxContainer(String path, String text, onClick) {
-    return FlatButton(
+    return TextButton(
       onPressed: onClick,
       child: Container(
       height: 60.0,

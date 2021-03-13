@@ -1,7 +1,11 @@
 import 'dart:ui';
 import 'package:blogiee/NetworkHandler.dart';
+import 'package:blogiee/screens/homepage.dart';
 import 'package:blogiee/screens/signup_screen.dart';
+import 'package:blogiee/utilities/constants.dart';
 import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 bool _isPasswordVisible = true;
 
@@ -23,6 +27,7 @@ class _SigninScreenState extends State<SigninScreen> {
   String errorText;
   bool validate = false;
   bool circular = false;
+  final storage = new FlutterSecureStorage();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,18 +57,9 @@ class _SigninScreenState extends State<SigninScreen> {
                 SizedBox(height: 20.0),
                 TextFormField(
                   controller: _passwordController,
-                  validator: (value)
-                  {
-                    if(value.isEmpty){
-                      return "Password cannot be empty";
-                    }
-                    if(value.length < 8){
-                      return "Password length cannot be less than 8";
-                    }
-                    return null;
-                  },
                   obscureText: _isPasswordVisible,
                   decoration: InputDecoration(
+                    errorText: validate ? null: errorText,
                     hintText: "Password",
                     prefixIcon: Icon(Icons.lock_outline),
                     suffixIcon: IconButton(
@@ -106,19 +102,46 @@ class _SigninScreenState extends State<SigninScreen> {
                   ],
                 ),
                 SizedBox(height: 40.0),
-                RaisedButton(
-                  onPressed: (){},
-                  child: Padding(
+                ElevatedButton(
+                  onPressed: () async{
+                    setState(() {
+                      circular = true;
+                    });
+                    Map<String, String> data = {
+                      "username": _usernameController.text,
+                      "password": _passwordController.text
+                    };
+                    var response = await networkHandler.post("/user/login", data);
+                    if(response.statusCode == 200 || response.statusCode == 201){
+                      Map<String, dynamic> output = json.decode(response.body);
+                      print(output['token']);
+                      await storage.write(key: "token", value: output['token']);
+                      setState(() {
+                        validate = true;
+                        circular = false;
+                      });
+                      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => HomePage()), (route) => false);
+                    }
+                    else{
+                      String output = json.decode(response.body);
+                      setState(() {
+                        validate = false;
+                        errorText = output;
+                        circular = false;
+                      });
+                    }
+                  },
+                  child: circular ? CircularProgressIndicator() : Padding(
                     padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 10.0),
-                    child: Text("Sign Up", 
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
+                    child: Text("Sign In", 
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ),
-                ),
               ],
             ),
           ),

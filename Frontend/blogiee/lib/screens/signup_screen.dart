@@ -96,7 +96,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   ),
                 ),
                 SizedBox(height: 40.0),
-                RaisedButton(
+                ElevatedButton(
                   onPressed: () async{
                     setState(() {
                       circular = true;
