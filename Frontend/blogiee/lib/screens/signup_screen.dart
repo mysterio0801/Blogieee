@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:blogiee/NetworkHandler.dart';
 import 'package:flutter/material.dart';
 
 bool _isPasswordVisible = true;
@@ -15,6 +16,13 @@ class SignupScreen extends StatefulWidget {
 
 class _SignupScreenState extends State<SignupScreen> {
   final _globalkey = GlobalKey<FormState>();
+  NetworkHandler networkHandler = NetworkHandler();
+  TextEditingController _usernameController = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+  String errorText;
+  bool validate = false;
+  bool circular = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,20 +42,16 @@ class _SignupScreenState extends State<SignupScreen> {
                 ),
                 SizedBox(height: 80.0),
                 TextFormField(
-                  validator: (value)
-                  {
-                    if(value.isEmpty){
-                      return "Username cannot be empty";
-                    }
-                    return null;
-                  },
+                  controller: _usernameController,
                   decoration: InputDecoration(
+                    errorText: validate ? null : errorText,
                     hintText: "Username",
                     prefixIcon: Icon(Icons.person),
                   ),
                 ),
                 SizedBox(height: 20.0),
                 TextFormField(
+                  controller: _emailController,
                   validator: (value)
                   {
                     if(value.isEmpty){
@@ -65,6 +69,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 ),
                 SizedBox(height: 20.0),
                 TextFormField(
+                  controller: _passwordController,
                   validator: (value)
                   {
                     if(value.isEmpty){
@@ -92,12 +97,30 @@ class _SignupScreenState extends State<SignupScreen> {
                 ),
                 SizedBox(height: 40.0),
                 RaisedButton(
-                  onPressed: (){
-                    if(_globalkey.currentState.validate()){
-                      print("Validated");
+                  onPressed: () async{
+                    setState(() {
+                      circular = true;
+                    });
+                    await checkUser();
+                    if(_globalkey.currentState.validate() && validate){
+                      Map<String, String> data = {
+                        "username" : _usernameController.text,
+                        "email" : _emailController.text,
+                        "password" : _passwordController.text
+                      };
+                      print(data);
+                      await networkHandler.post("/user/register", data);
+                      setState(() {
+                        circular = false;
+                      });
+                    }
+                    else{
+                      setState(() {
+                        circular = false;
+                      });
                     }
                   },
-                  child: Padding(
+                  child: circular ? CircularProgressIndicator() : Padding(
                     padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 10.0),
                     child: Text("Sign Up", 
                       style: TextStyle(
@@ -114,5 +137,29 @@ class _SignupScreenState extends State<SignupScreen> {
         ),
       ),
     );
+  }
+
+  checkUser() async{
+    if(_usernameController.text.length == 0){
+      setState(() {
+        validate = false;
+        errorText = "Username can't be empty";
+      });
+    }
+    else{
+      var response = await networkHandler.get("/user/checkusername/${_usernameController.text}");
+      print(response);
+      if(response["Status"]){
+        setState(() {
+          validate = false;
+          errorText = "Username already taken";
+        });
+      }
+      else{
+        setState(() {
+          validate = true;
+        });
+      }
+    }
   }
 }
