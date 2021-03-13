@@ -1,13 +1,22 @@
 import 'dart:ui';
+import 'package:blogiee/screens/signin_screen.dart';
 import 'package:blogiee/screens/signup_screen.dart';
+import 'package:blogiee/screens/testing.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert' as JSON;
 
 class WelcomeSceen extends StatefulWidget {
   @override
   _WelcomeSceenState createState() => _WelcomeSceenState();
 }
 
+
 class _WelcomeSceenState extends State<WelcomeSceen> {
+  bool _isLogin = false;
+  Map data;
+  final facebookLogin = FacebookLogin();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,7 +46,7 @@ class _WelcomeSceenState extends State<WelcomeSceen> {
               SizedBox(height: 40.0),
               boxContainer("assets/google.png", "Sign up with Google", null),
               SizedBox(height: 20.0),
-              boxContainer("assets/fb.png", "Sign up with Facebook", null),
+              boxContainer("assets/fb.png", "Sign up with Facebook", onFBLogin),
               SizedBox(height: 20.0),
               boxContainer("assets/icons8-important-mail-96 (4) - Copy.png", "Sign up with Email", onEmailClick),
               SizedBox(height: 10.0),
@@ -48,8 +57,13 @@ class _WelcomeSceenState extends State<WelcomeSceen> {
                   style: TextStyle(fontSize: 14.0, color: Colors.black54),
                   ),
                   SizedBox(width: 5.0),
-                  Text("Sign In",
-                  style: TextStyle(color: Colors.black87, fontWeight: FontWeight.bold),
+                  InkWell(
+                    onTap: (){
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => SigninScreen()));
+                    },
+                    child: Text("Sign In",
+                    style: TextStyle(color: Colors.black87, fontWeight: FontWeight.bold),
+                    ),
                   ),
                 ],
               )
@@ -58,6 +72,37 @@ class _WelcomeSceenState extends State<WelcomeSceen> {
         ),
       ),
     );
+  }
+
+  onFBLogin() async{
+    print("is it working");
+    final result = await facebookLogin.logIn(['email']);
+    switch(result.status){
+      case FacebookLoginStatus.loggedIn:
+        final token = result.accessToken.token;
+        final response = await http.get("https://graph.facebook.com/v2.12/me?fields=name,picture,email&access_token=$token");
+        final data1 = JSON.jsonDecode(response.body);
+        print(data1);
+        setState(() {
+          _isLogin = true;
+          data = data1;
+        });
+        break;
+      case FacebookLoginStatus.cancelledByUser:
+        setState(() {
+          _isLogin = false;
+        });
+        break;
+      case FacebookLoginStatus.error:
+        setState(() {
+          _isLogin = false;
+        });
+        break;
+    }
+    if(_isLogin){
+      print('true');
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => Testing()));
+    }
   }
 
   onEmailClick(){
@@ -88,7 +133,7 @@ class _WelcomeSceenState extends State<WelcomeSceen> {
           ),
         ),
       ),
-        ),
+      ),
     );
   }
 }
