@@ -1,4 +1,4 @@
-import 'package:blogiee/screens/homepage.dart';
+import 'package:blogiee/screens/landing_page.dart';
 import 'package:blogiee/screens/welcome_screen.dart';
 import 'package:blogiee/utilities/constants.dart';
 import 'package:flutter/material.dart';
@@ -28,7 +28,7 @@ class _MyAppState extends State<MyApp> {
     print(token);
     if(token != null){
       setState(() {
-        page = HomePage();
+        page = LandingPage();
       });
     }
     else{

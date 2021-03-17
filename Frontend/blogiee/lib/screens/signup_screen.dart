@@ -3,7 +3,7 @@ import 'package:blogiee/NetworkHandler.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'homepage.dart';
+import 'landing_page.dart';
 
 bool _isPasswordVisible = true;
 
@@ -128,7 +128,7 @@ class _SignupScreenState extends State<SignupScreen> {
                             validate = true;
                             circular = false;
                           });
-                          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => HomePage()), (route) => false);
+                          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => LandingPage()), (route) => false);
                         }
                         else{
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Network Error")));

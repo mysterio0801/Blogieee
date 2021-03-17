@@ -1,7 +1,7 @@
 import 'dart:ui';
 import 'package:blogiee/screens/signin_screen.dart';
 import 'package:blogiee/screens/signup_screen.dart';
-import 'package:blogiee/screens/homepage.dart';
+import 'package:blogiee/screens/landing_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:http/http.dart' as http;
@@ -99,7 +99,7 @@ class _WelcomeSceenState extends State<WelcomeSceen> {
     }
     if(_isLogin){
       print('true');
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomePage()));
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => LandingPage()));
     }
   }
 

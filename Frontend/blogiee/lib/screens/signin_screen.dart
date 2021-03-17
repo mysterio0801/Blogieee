@@ -1,6 +1,6 @@
 import 'dart:ui';
 import 'package:blogiee/NetworkHandler.dart';
-import 'package:blogiee/screens/homepage.dart';
+import 'package:blogiee/screens/landing_page.dart';
 import 'package:blogiee/screens/signup_screen.dart';
 import 'package:blogiee/utilities/constants.dart';
 import 'package:flutter/material.dart';
@@ -120,7 +120,7 @@ class _SigninScreenState extends State<SigninScreen> {
                         validate = true;
                         circular = false;
                       });
-                      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => HomePage()), (route) => false);
+                      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => LandingPage()), (route) => false);
                     }
                     else{
                       String output = json.decode(response.body);
