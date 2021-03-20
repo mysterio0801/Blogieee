@@ -1,3 +1,4 @@
+import 'package:blogiee/NetworkHandler.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
@@ -8,52 +9,114 @@ class CreateProfile extends StatefulWidget {
 }
 
 class _CreateProfileState extends State<CreateProfile> {
+  final _networkHandler = NetworkHandler();
+  final _globalKey = GlobalKey<FormState>();
   PickedFile _image;
   final ImagePicker _imagePicker = ImagePicker();
+  TextEditingController _nameController = TextEditingController();
+  TextEditingController _professionController = TextEditingController();
+  TextEditingController _dobController = TextEditingController();
+  TextEditingController _titleController = TextEditingController();
+  TextEditingController _aboutController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(20.0),
-        child: ListView(
-          children: [
-            imageProfile(),
-            SizedBox(height: 20.0),
-            TextFormField(
-              decoration: InputDecoration(
-                labelText: "Name",
-                icon: Icon(Icons.person),
+        child: Form(
+          key: _globalKey,
+          child: ListView(
+            children: [
+              imageProfile(),
+              SizedBox(height: 20.0),
+              TextFormField(
+                controller: _nameController,
+                validator: (value) {
+                  if(value.isEmpty)
+                    return "Name can't be empty";
+                  return null;
+                },
+                decoration: InputDecoration(
+                  labelText: "Name",
+                  prefixIcon: Icon(Icons.person),
+                ),
               ),
-            ),
-            SizedBox(height: 20.0),
-            TextFormField(
-              decoration: InputDecoration(
-                labelText: "Profession",
-                icon: Icon(Icons.admin_panel_settings_rounded),
+              SizedBox(height: 20.0),
+              TextFormField(
+                controller: _professionController,
+                validator: (value) {
+                  if(value.isEmpty)
+                    return "Profession can't be empty";
+                  return null;
+                },
+                decoration: InputDecoration(
+                  labelText: "Profession",
+                  prefixIcon: Icon(Icons.admin_panel_settings_rounded),
+                ),
               ),
-            ),
-            SizedBox(height: 20.0),
-            TextFormField(
-              decoration: InputDecoration(
-                labelText: "Date of Birth",
-                icon: Icon(Icons.date_range),
+              SizedBox(height: 20.0),
+              TextFormField(
+                controller: _dobController,
+                validator: (value) {
+                  if(value.isEmpty)
+                    return "DOB can't be empty";
+                  return null;
+                },
+                decoration: InputDecoration(
+                  labelText: "Date of Birth",
+                  prefixIcon: Icon(Icons.date_range),
+                ),
               ),
-            ),
-            SizedBox(height: 20.0),
-            TextFormField(
-              decoration: InputDecoration(
-                labelText: "Title",
-                icon: Icon(Icons.title),
+              SizedBox(height: 20.0),
+              TextFormField(
+                controller: _titleController,
+                validator: (value) {
+                  if(value.isEmpty)
+                    return "Title can't be empty";
+                  return null;
+                },
+                decoration: InputDecoration(
+                  labelText: "Title",
+                  prefixIcon: Icon(Icons.title),
+                ),
               ),
-            ),
-            SizedBox(height: 20.0),
-            TextFormField(
-              maxLines: 5,
-              decoration: InputDecoration(
-                labelText: "About",
+              SizedBox(height: 20.0),
+              TextFormField(
+                controller: _aboutController,
+                validator: (value) {
+                  if(value.isEmpty)
+                    return "About can't be empty";
+                  return null;
+                },
+                maxLines: 5,
+                decoration: InputDecoration(
+                  labelText: "About",
+                ),
               ),
-            ),
-          ],
+              SizedBox(height: 30.0),
+              ElevatedButton(
+                onPressed: () async{
+                  if(_globalKey.currentState.validate()){
+                    Map<String, String> data = {
+                      "name" : _nameController.text,
+                      "profession" : _professionController.text,
+                      "DOB" : _dobController.text,
+                      "titleline" : _titleController.text,
+                      "about" : _aboutController.text
+                    };
+                    var response = await _networkHandler.post("/profile/add", data);
+                    print("Validated");
+                    print(response.statusCode);
+                  }
+                }, 
+                child: Text("Add Profile"),
+                style: ButtonStyle(
+                  padding: MaterialStateProperty.all(EdgeInsets.all(10.0)),
+                ),
+              ),
+            ],
+          ),
         ),
       )
     );
