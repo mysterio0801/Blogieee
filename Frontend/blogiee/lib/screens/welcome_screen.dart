@@ -78,7 +78,7 @@ class _WelcomeSceenState extends State<WelcomeSceen> {
     switch(result.status){
       case FacebookLoginStatus.loggedIn:
         final token = result.accessToken.token;
-        final response = await http.get("https://graph.facebook.com/v2.12/me?fields=name,picture,email&access_token=$token");
+        final response = await http.get(Uri.parse("https://graph.facebook.com/v2.12/me?fields=name,picture,email&access_token=$token"));
         final data1 = JSON.jsonDecode(response.body);
         print(data1);
         setState(() {

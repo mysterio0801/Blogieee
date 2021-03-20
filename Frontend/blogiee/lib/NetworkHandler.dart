@@ -6,7 +6,7 @@ class NetworkHandler{
 
   Future<dynamic> get(String url) async{
     url = formater(url);
-    var response  = await http.get(url);
+    var response  = await http.get(Uri.parse(url));
     if(response.statusCode == 200 || response.statusCode == 201){
       return json.decode(response.body);
     }
@@ -15,7 +15,7 @@ class NetworkHandler{
   Future<http.Response> post(String url, Map<String, String> body) async{
     url = formater(url);
     var response  = await http.post(
-      url,
+      Uri.parse(url),
       headers: {"Content-type" : "application/json"},
       body: json.encode(body),
     );

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 
 class CreateProfile extends StatefulWidget {
   @override
@@ -6,6 +8,8 @@ class CreateProfile extends StatefulWidget {
 }
 
 class _CreateProfileState extends State<CreateProfile> {
+  PickedFile _image;
+  final ImagePicker _imagePicker = ImagePicker();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -13,6 +17,8 @@ class _CreateProfileState extends State<CreateProfile> {
         padding: const EdgeInsets.all(20.0),
         child: ListView(
           children: [
+            imageProfile(),
+            SizedBox(height: 20.0),
             TextFormField(
               decoration: InputDecoration(
                 labelText: "Name",
@@ -50,6 +56,89 @@ class _CreateProfileState extends State<CreateProfile> {
           ],
         ),
       )
+    );
+  }
+
+  Future takePhoto(ImageSource source) async{
+    final pickedFile = await _imagePicker.getImage(source: source);
+    setState(() {
+      _image = pickedFile;
+    });
+  }
+
+  Widget imageProfile(){
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 10.0),
+        child: Stack(
+          children: [
+            CircleAvatar(
+              radius: 80,
+              backgroundImage: _image == null ? AssetImage("assets/cr0Ed4-Y_400x400.jpg") : FileImage(File(_image.path)),
+            ),
+            Positioned(
+              bottom: 30.0,
+              right: -10.0,
+              child: IconButton(
+                iconSize: 30.0,
+                color: Colors.teal,
+                icon: Icon(Icons.camera_alt),
+                onPressed: (){
+                  showModalBottomSheet(context: context, builder: ((builder) => bottomSheet()));
+                }
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget bottomSheet(){
+    return Container(
+      height: 110.0,
+      width: MediaQuery.of(context).size.width,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
+        child: Column(
+          children: [
+            Text("Choose Profile Photo",
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 16.0,
+              ),
+            ),
+            SizedBox(height: 3.0),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  TextButton.icon(
+                    onPressed: (){
+                        takePhoto(ImageSource.camera);
+                    }, 
+                    icon: Icon(
+                      Icons.camera_alt,
+                    ),
+                    label: Text("Camera"),
+                  ),
+                  SizedBox(width: 30.0),
+                  TextButton.icon(
+                    onPressed: (){
+                      takePhoto(ImageSource.gallery);
+                    }, 
+                    icon: Icon(
+                      Icons.photo,
+                    ),
+                    label: Text("Gallery"),
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
     );
   }
 }
