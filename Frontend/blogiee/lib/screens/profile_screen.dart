@@ -1,5 +1,6 @@
 import 'package:blogiee/screens/create_profile.dart';
 import 'package:flutter/material.dart';
+import 'package:blogiee/NetworkHandler.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -7,10 +8,41 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  NetworkHandler _networkHandler = NetworkHandler();
+  Widget page = Text("loading...");
+
+  @override
+  void initState(){
+    super.initState();
+    checkProfile();
+  }
+
+  void checkProfile() async{
+    var response = await _networkHandler.get("/profile/checkProfile");
+    if(response["status"] == true){
+      setState(() {
+        page = profile();
+      });
+    }
+    else{
+      setState(() {
+        page = button();
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: button(),
+      body: Center(
+        child: page
+      ),
+    );
+  }
+
+  Widget profile(){
+    return Center(
+      child: Text("Profile Hai")
     );
   }
 

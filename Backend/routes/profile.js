@@ -27,13 +27,13 @@ const upload = multer({
   limits: {
     fileSize: 1024 * 1024 * 6,
   },
-  fileFilter: fileFilter,
+  // fileFilter: fileFilter,
 });
 
 router
   .route("/add/image")
-  .patch(middleware.checkToken, upload.single("img"), async (req, res) => {
-    await Profile.findOneAndUpdate(
+  .patch(middleware.checkToken, upload.single("img"), (req, res) => {
+    Profile.findOneAndUpdate(
       { username: req.decoded.username },
       {
         $set: {
@@ -70,5 +70,76 @@ router.route("/add").post(middleware.checkToken, (req, res) => {
       return res.status(400).json({ err: err });
     });
 });
+
+router.route("/checkProfile").get(middleware.checkToken, (req, res) => {
+  Profile.findOne({ username: req.decoded.username })
+    .then((result) => {
+      if (result) {
+        console.log(`Successfully found document: ${result}.`);
+        return res.json({ status: true, result: result });
+      } else {
+        console.log("No document matches the provided query.");
+        return res.json({ status: false });
+      }
+    })
+    .catch((err) => {
+      console.log(`Failed to find document: ${err}`);
+      return res.json({ err: err });
+    });
+});
+
+router.route("/getData").get(middleware.checkToken, (req, res) => {
+  Profile.findOne({ username: req.decoded.username })
+    .then((result) => {
+      if (result) {
+        return res.json({ status: true, data: result });
+      } else {
+        return res.json({ status: false, data: [] });
+      }
+    })
+    .catch((err) => {
+      return res.json({ err: err });
+    });
+});
+
+router
+  .route("/updateProfile")
+  .patch(middleware.checkToken, async (req, res) => {
+    let profile = {};
+    await Profile.findOne({ username: req.decoded.username }, (err, result) => {
+      if (err) {
+        profile = {};
+      }
+      if (result != null) {
+        profile = result;
+      }
+    });
+    Profile.findOneAndUpdate(
+      { username: req.decoded.username },
+      {
+        $set: {
+          name: req.body.name ? req.body.name : profile.name,
+          profession: req.body.profession
+            ? req.body.profession
+            : profile.profession,
+          DOB: req.body.DOB ? req.body.DOB : profile.DOB,
+          titleline: req.body.titleline
+            ? req.body.titleline
+            : profile.titleline,
+          about: req.body.about ? req.body.about : profile.about,
+        },
+      }
+    )
+      .then((result) => {
+        if (result) {
+          return res.json({ status: true });
+        } else {
+          return res.json({ status: false });
+        }
+      })
+      .catch((err) => {
+        return res.json({ err: err });
+      });
+  });
 
 module.exports = router;

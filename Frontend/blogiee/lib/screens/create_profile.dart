@@ -1,5 +1,7 @@
 import 'package:blogiee/NetworkHandler.dart';
+import 'package:blogiee/screens/home_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
@@ -9,8 +11,10 @@ class CreateProfile extends StatefulWidget {
 }
 
 class _CreateProfileState extends State<CreateProfile> {
-  final _networkHandler = NetworkHandler();
+  NetworkHandler networkHandler = NetworkHandler();
+  bool circular = false;
   final _globalKey = GlobalKey<FormState>();
+  final storage = new FlutterSecureStorage();
   PickedFile _image;
   final ImagePicker _imagePicker = ImagePicker();
   TextEditingController _nameController = TextEditingController();
@@ -97,6 +101,7 @@ class _CreateProfileState extends State<CreateProfile> {
               SizedBox(height: 30.0),
               ElevatedButton(
                 onPressed: () async{
+                  circular = true;
                   if(_globalKey.currentState.validate()){
                     Map<String, String> data = {
                       "name" : _nameController.text,
@@ -105,12 +110,29 @@ class _CreateProfileState extends State<CreateProfile> {
                       "titleline" : _titleController.text,
                       "about" : _aboutController.text
                     };
-                    var response = await _networkHandler.post("/profile/add", data);
+                    var response = await networkHandler.post("/profile/add", data);
                     print("Validated");
                     print(response.statusCode);
+                    if(response.statusCode == 200 || response.statusCode == 201){
+                      if(_image.path != null){
+                        var imageResponse = await networkHandler.patchImage("/profile/add/image", _image.path);
+                        if(imageResponse.statusCode == 200){
+                          setState(() {
+                            circular = false;
+                          });
+                          Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => HomeScreen()), (route) => false);
+                        }
+                      }
+                      else{
+                        setState(() {
+                          circular = false;
+                        });
+                      }
+                    }
+                    print(response.body);
                   }
                 }, 
-                child: Text("Add Profile"),
+                child: circular ? CircularProgressIndicator : Text("Submit"),
                 style: ButtonStyle(
                   padding: MaterialStateProperty.all(EdgeInsets.all(10.0)),
                 ),

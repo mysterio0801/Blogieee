@@ -4,13 +4,14 @@ const config = require("./config");
 let checkToken = (req, res, next) => {
   let token = req.headers["authorization"];
   console.log(token);
-  token = token.slice(7, token.length);
   if (token) {
+    token = token.slice(7, token.length);
     jwt.verify(token, config.key, (err, decoded) => {
       if (err) {
+        console.log(err);
         return res.json({
           status: false,
-          msg: "token is invalid",
+          msg: err,
         });
       } else {
         req.decoded = decoded;

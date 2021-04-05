@@ -12,6 +12,8 @@ mongoose.connect(
   }
 );
 
+mongoose.set("useFindAndModify", false);
+
 const connection = mongoose.connection;
 connection.once("open", () => {
   console.log("MongoDB Connected");
