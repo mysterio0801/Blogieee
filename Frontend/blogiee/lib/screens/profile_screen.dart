@@ -1,4 +1,5 @@
 import 'package:blogiee/screens/create_profile.dart';
+import 'package:blogiee/screens/main_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:blogiee/NetworkHandler.dart';
 
@@ -9,7 +10,7 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   NetworkHandler _networkHandler = NetworkHandler();
-  Widget page = Text("loading...");
+  Widget page = CircularProgressIndicator();
 
   @override
   void initState(){
@@ -21,7 +22,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     var response = await _networkHandler.get("/profile/checkProfile");
     if(response["status"] == true){
       setState(() {
-        page = profile();
+        page = MainProfile();
       });
     }
     else{
@@ -40,11 +41,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Widget profile(){
-    return Center(
-      child: Text("Profile Hai")
-    );
-  }
+  // Widget profile(){
+  //   return Center(
+  //     child: Text("Profile Hai")
+  //   );
+  // }
 
   Widget button(){
     return Padding(

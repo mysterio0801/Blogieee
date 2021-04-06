@@ -1,4 +1,5 @@
 import 'package:blogiee/screens/landing_page.dart';
+import 'package:blogiee/screens/main_profile.dart';
 import 'package:blogiee/screens/welcome_screen.dart';
 import 'package:blogiee/utilities/constants.dart';
 import 'package:flutter/material.dart';

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
@@ -41,6 +42,11 @@ class NetworkHandler{
     });
     var response = request.send();
     return response;
+  }
+
+  NetworkImage getImage(String username){
+    String url = formater("/uploads//$username.jpg");
+    return NetworkImage(url);
   }
 
   String formater(String url){
