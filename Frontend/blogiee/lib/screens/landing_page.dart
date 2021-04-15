@@ -1,3 +1,4 @@
+import 'package:blogiee/Blog/addblog.dart';
 import 'package:blogiee/screens/home_screen.dart';
 import 'package:blogiee/screens/profile_screen.dart';
 import 'package:flutter/material.dart';
@@ -50,7 +51,9 @@ class _LandingPageState extends State<LandingPage> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: (){}, 
+        onPressed: (){
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddBlog()));
+        }, 
         child: Text(
           '+', 
           style: TextStyle(fontSize: 35.0),

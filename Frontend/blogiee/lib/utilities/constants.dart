@@ -19,7 +19,7 @@ class OurTheme {
         ),
       ),
       buttonTheme: ButtonThemeData(
-        buttonColor: Colors.black54,
+        buttonColor: Colors.teal,
         padding: EdgeInsets.symmetric(horizontal: 20.0),
         minWidth: 150.0,
         height: 50.0,
