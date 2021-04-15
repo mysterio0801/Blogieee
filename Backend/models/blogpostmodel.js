@@ -10,9 +10,18 @@ const BlogPost = Schema({
     type: String,
     default: "",
   },
-  share: Number,
-  like: Number,
-  comment: Number,
+  share: {
+    type: Number,
+    default: 0,
+  },
+  like: {
+    type: Number,
+    default: 0,
+  },
+  comment: {
+    type: Number,
+    default: 0,
+  },
 });
 
 module.exports = mongoose.model("BlogPost", BlogPost);
