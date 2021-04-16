@@ -1,4 +1,9 @@
+import 'dart:convert';
+
 import 'package:blogiee/Custom%20Widget/overlaycard.dart';
+import 'package:blogiee/NetworkHandler.dart';
+import 'package:blogiee/models/addBlogModels.dart';
+import 'package:blogiee/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -14,6 +19,7 @@ class _AddBlogState extends State<AddBlog> {
   PickedFile _image;
   final ImagePicker _imagePicker = ImagePicker();
   IconData iconPhoto = Icons.image;
+  NetworkHandler _networkHandler = NetworkHandler();
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +62,23 @@ class _AddBlogState extends State<AddBlog> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 80),
                 child: ElevatedButton(
-                  onPressed: null, child: Text('Add Blog', style: TextStyle(color: Colors.white),),
+                  onPressed: () async{
+                    if(_image.path != null && _globalKey.currentState.validate()){
+                      AddBlogModel addBlogModel = AddBlogModel(body: _bodyController.text, title: _titleController.text);
+                      var response = await _networkHandler.post1("/blogPost/add", addBlogModel.toJson());
+                      print(response.body);
+
+                      if(response.statusCode == 200 || response.statusCode == 201){
+                        String id = json.decode(response.body)["data"];
+                        var imageResponse = await _networkHandler.patchImage("/blogPost/add/coverImage/$id", _image.path);
+                        print(imageResponse.statusCode);
+                        if(imageResponse.statusCode == 200 || imageResponse.statusCode == 201){
+                          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => HomeScreen()), (route) => false);
+                        }
+                      }
+                    }
+                  }, 
+                  child: Text('Add Blog', style: TextStyle(color: Colors.white),),
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(Colors.teal), 
                     padding: MaterialStateProperty.all(EdgeInsets.all(15.0)),
