@@ -70,16 +70,21 @@ router.route("/add").post(middleware.checkToken, (req, res) => {
       return res.status(400).json({ err: err });
     });
 });
-
 router.route("/checkProfile").get(middleware.checkToken, (req, res) => {
   Profile.findOne({ username: req.decoded.username })
     .then((result) => {
       if (result) {
         console.log(`Successfully found document: ${result}.`);
-        return res.json({ status: true, result: result });
+        return res.json({
+          status: true,
+          username: req.decoded.username,
+        });
       } else {
         console.log("No document matches the provided query.");
-        return res.json({ status: false });
+        return res.json({
+          status: false,
+          username: req.decoded.username,
+        });
       }
     })
     .catch((err) => {
