@@ -1,3 +1,4 @@
+import 'package:blogiee/Custom%20Widget/overlaycard.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -30,7 +31,16 @@ class _AddBlogState extends State<AddBlog> {
         actions: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10.0),
-            child: TextButton(onPressed: null, child: Text('Preview', style: TextStyle(fontSize: 16.0, color: Colors.teal),),),
+            child: TextButton(
+              onPressed: (){
+                if(_image.path != null && _globalKey.currentState.validate()){
+                  showModalBottomSheet(
+                    context: context, 
+                    builder: ((builder) => OverlayCard(imageFile : _image, title: _titleController.text)),
+                  );
+                }
+              },
+              child: Text('Preview', style: TextStyle(fontSize: 16.0, color: Colors.teal),),),
           ),
         ],
       ),
