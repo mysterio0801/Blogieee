@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:blogiee/Custom%20Widget/overlaycard.dart';
 import 'package:blogiee/NetworkHandler.dart';
 import 'package:blogiee/models/addBlogModels.dart';
-import 'package:blogiee/screens/home_screen.dart';
+import 'package:blogiee/screens/landing_page.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -69,11 +69,11 @@ class _AddBlogState extends State<AddBlog> {
                       print(response.body);
 
                       if(response.statusCode == 200 || response.statusCode == 201){
-                        String id = json.decode(response.body)["data"];
+                        String id = json.decode(response.body)["data"]["_id"];
                         var imageResponse = await _networkHandler.patchImage("/blogPost/add/coverImage/$id", _image.path);
                         print(imageResponse.statusCode);
                         if(imageResponse.statusCode == 200 || imageResponse.statusCode == 201){
-                          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => HomeScreen()), (route) => false);
+                          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => LandingPage()), (route) => false);
                         }
                       }
                     }

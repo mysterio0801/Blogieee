@@ -1,3 +1,4 @@
+import 'package:blogiee/Blog/blogs.dart';
 import 'package:blogiee/NetworkHandler.dart';
 import 'package:blogiee/models/profileModel.dart';
 import 'package:flutter/material.dart';
@@ -61,7 +62,9 @@ class _MainProfileState extends State<MainProfile> {
           SizedBox(height: 10.0),
           Divider(
             height: 0.8,
-          )
+          ),
+          SizedBox(height: 20.0),
+          Blogs(url: "/blogPost/getOwnResult"),
         ],
       ),
     );

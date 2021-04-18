@@ -1,3 +1,4 @@
+import 'package:blogiee/Blog/blogs.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -9,15 +10,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('Home Screen'),
-          ],
-        ),
-      ),
+    return ListView(
+        children: [
+          Blogs(
+            url: "/blogPost/getOtherResult",
+          ),
+        ]
     );
   }
 }
