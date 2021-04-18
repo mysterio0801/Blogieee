@@ -1,9 +1,9 @@
 import 'dart:ui';
 import 'package:blogiee/NetworkHandler.dart';
-import 'package:blogiee/screens/forgot_password.dart';
 import 'package:blogiee/screens/landing_page.dart';
+import 'package:blogiee/screens/signin_screen.dart';
 import 'package:blogiee/screens/signup_screen.dart';
-import 'package:blogiee/utilities/constants.dart';
+import 'package:blogiee/screens/welcome_screen.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -15,12 +15,12 @@ void initState(){
   _isPasswordVisible = false;
 }
 
-class SigninScreen extends StatefulWidget {
+class ForgotPasswordScreen extends StatefulWidget {
   @override
-  _SigninScreenState createState() => _SigninScreenState();
+  _ForgotPasswordScreenState createState() => _ForgotPasswordScreenState();
 }
 
-class _SigninScreenState extends State<SigninScreen> {
+class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   final _globalkey = GlobalKey<FormState>();
   NetworkHandler networkHandler = NetworkHandler();
   TextEditingController _usernameController = TextEditingController();
@@ -43,7 +43,7 @@ class _SigninScreenState extends State<SigninScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text("Sign In with Email!",
+                Text("Forgot Password",
                   style: TextStyle(fontSize: 26.0, fontWeight: FontWeight.w500),
                 ),
                 SizedBox(height: 80.0),
@@ -61,7 +61,7 @@ class _SigninScreenState extends State<SigninScreen> {
                   obscureText: _isPasswordVisible,
                   decoration: InputDecoration(
                     errorText: validate ? null: errorText,
-                    hintText: "Password",
+                    hintText: "New Password",
                     prefixIcon: Icon(Icons.lock_outline),
                     suffixIcon: IconButton(
                       icon: Icon(
@@ -74,72 +74,22 @@ class _SigninScreenState extends State<SigninScreen> {
                     ),
                   ),
                 ),
-                SizedBox(height: 20.0),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    InkWell(
-                      onTap:  (){
-                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ForgotPasswordScreen()));
-                      },
-                      child: Text(
-                        "Forgot Password?",
-                        style: TextStyle(
-                          color: Colors.blue,
-                          fontSize: 15.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: 100.0),
-                    InkWell(
-                      onTap: (){
-                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => SignupScreen()));
-                      },
-                      child: Text(
-                        "New User?",
-                        style: TextStyle(
-                          color: Colors.blue,
-                          fontSize: 15.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
                 SizedBox(height: 40.0),
                 ElevatedButton(
                   onPressed: () async{
-                    setState(() {
-                      circular = true;
-                    });
                     Map<String, String> data = {
-                      "username": _usernameController.text,
-                      "password": _passwordController.text
+                      "password" : _passwordController.text,
                     };
-                    var response = await networkHandler.post("/user/login", data);
+                    var response = await networkHandler.patch("/user/update/${_usernameController.text}", data);
+
                     if(response.statusCode == 200 || response.statusCode == 201){
-                      Map<String, dynamic> output = json.decode(response.body);
-                      print(output['token']);
-                      await storage.write(key: "token", value: output['token']);
-                      setState(() {
-                        validate = true;
-                        circular = false;
-                      });
-                      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => LandingPage()), (route) => false);
-                    }
-                    else{
-                      String output = json.decode(response.body);
-                      setState(() {
-                        validate = false;
-                        errorText = output;
-                        circular = false;
-                      });
+                      print("/user/update/${_usernameController.text}");
+                      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => SigninScreen()), (route) => false);
                     }
                   },
                   child: circular ? CircularProgressIndicator() : Padding(
                     padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 10.0),
-                    child: Text("Sign In", 
+                    child: Text("Update Password", 
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 20.0,
