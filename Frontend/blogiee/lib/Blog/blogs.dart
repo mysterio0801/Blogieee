@@ -42,7 +42,7 @@ class _BlogsState extends State<Blogs> {
               addBlogModel: item, networkHandler: networkHandler
             ), 
             onTap: (){
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => IndividualBlog()));
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => IndividualBlog(addBlogModel: item, networkHandler: networkHandler)));
             },
           ),
         ).toList(),

@@ -43,7 +43,7 @@ router.route("/add").post(middleware.checkToken, (req, res) => {
   const blogpost = BlogPost({
     username: req.decoded.username,
     title: req.body.title,
-    about: req.body.about,
+    body: req.body.body,
   });
   blogpost
     .save()

@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 const BlogPost = Schema({
   username: String,
   title: String,
-  about: String,
+  body: String,
   coverImage: {
     type: String,
     default: "",
