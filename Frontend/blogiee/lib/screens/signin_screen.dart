@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:blogiee/NetworkHandler.dart';
 import 'package:blogiee/screens/forgot_password.dart';
 import 'package:blogiee/screens/landing_page.dart';
@@ -7,6 +8,7 @@ import 'package:blogiee/utilities/constants.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 bool _isPasswordVisible = true;
 
@@ -35,37 +37,54 @@ class _SigninScreenState extends State<SigninScreen> {
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(color: Colors.green[100]),
+        decoration: BoxDecoration(image: DecorationImage(image: AssetImage("assets/jake-blucker-tMzCrBkM99Y-unsplash.jpg"), fit: BoxFit.cover)),
         child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Form(
             key: _globalkey,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Text("Sign In with Email!",
-                  style: TextStyle(fontSize: 26.0, fontWeight: FontWeight.w500),
+                Column(
+                  children: [
+                    Text("Welcome Back!",
+                      style: GoogleFonts.amaticSc(textStyle: TextStyle(fontSize: 46.0)),
+                    ),
+                    SizedBox(height: 16),
+                    AnimatedTextKit(
+                      animatedTexts: [
+                        TypewriterAnimatedText("Wanderer",
+                          textAlign: TextAlign.center,
+                          textStyle: GoogleFonts.montserrat(textStyle: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w300)),
+                          speed: const Duration(milliseconds: 100),
+                        ),
+                      ], 
+                      totalRepeatCount: 1,
+                    ),
+                  ],
                 ),
                 SizedBox(height: 80.0),
-                TextFormField(
-                  controller: _usernameController,
-                  decoration: InputDecoration(
-                    errorText: validate ? null : errorText,
-                    hintText: "Username",
-                    prefixIcon: Icon(Icons.person),
-                  ),
-                ),
-                SizedBox(height: 20.0),
+                Column(
+                  children: [
+                    TextFormField(
+                      controller: _usernameController,
+                      decoration: InputDecoration(
+                        errorText: validate ? null : errorText,
+                        hintText: "Username",
+                        prefixIcon: Icon(Icons.person, color: Colors.white),
+                      ),
+                    ),
+                    SizedBox(height: 20.0),
                 TextFormField(
                   controller: _passwordController,
                   obscureText: _isPasswordVisible,
                   decoration: InputDecoration(
                     errorText: validate ? null: errorText,
                     hintText: "Password",
-                    prefixIcon: Icon(Icons.lock_outline),
+                    prefixIcon: Icon(Icons.lock_outline, color: Colors.white),
                     suffixIcon: IconButton(
                       icon: Icon(
-                        _isPasswordVisible ? Icons.visibility : Icons.visibility_off),
+                        _isPasswordVisible ? Icons.visibility : Icons.visibility_off, color: Colors.white),
                       onPressed: () {
                         setState(() {
                           _isPasswordVisible = !_isPasswordVisible;
@@ -74,7 +93,7 @@ class _SigninScreenState extends State<SigninScreen> {
                     ),
                   ),
                 ),
-                SizedBox(height: 20.0),
+                SizedBox(height: 15.0),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -84,10 +103,10 @@ class _SigninScreenState extends State<SigninScreen> {
                       },
                       child: Text(
                         "Forgot Password?",
-                        style: TextStyle(
+                        style: GoogleFonts.montserrat(
                           color: Colors.blue,
                           fontSize: 15.0,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
                     ),
@@ -98,17 +117,21 @@ class _SigninScreenState extends State<SigninScreen> {
                       },
                       child: Text(
                         "New User?",
-                        style: TextStyle(
+                        style: GoogleFonts.montserrat(
                           color: Colors.blue,
                           fontSize: 15.0,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
                     ),
                   ],
                 ),
                 SizedBox(height: 40.0),
-                ElevatedButton(
+                OutlinedButton(
+                  style: ButtonStyle(
+                    shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0),),),
+                    backgroundColor: MaterialStateProperty.all(Colors.blue),
+                  ),
                   onPressed: () async{
                     setState(() {
                       circular = true;
@@ -140,14 +163,12 @@ class _SigninScreenState extends State<SigninScreen> {
                   child: circular ? CircularProgressIndicator() : Padding(
                     padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 10.0),
                     child: Text("Sign In", 
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        style: GoogleFonts.montserrat(textStyle: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w400, color: Colors.white))
                       ),
                     ),
                   ),
+                  ],
+                ),
               ],
             ),
           ),

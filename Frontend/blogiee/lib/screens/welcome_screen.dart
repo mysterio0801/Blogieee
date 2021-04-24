@@ -1,11 +1,10 @@
 import 'dart:ui';
 import 'package:blogiee/screens/signin_screen.dart';
 import 'package:blogiee/screens/signup_screen.dart';
-import 'package:blogiee/screens/landing_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert' as JSON;
+import 'package:google_fonts/google_fonts.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
 
 class WelcomeSceen extends StatefulWidget {
   @override
@@ -23,84 +22,75 @@ class _WelcomeSceenState extends State<WelcomeSceen> {
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(color: Colors.green[100]),
+        decoration: BoxDecoration(image: DecorationImage(image: AssetImage("assets/jake-blucker-tMzCrBkM99Y-unsplash.jpg"), fit: BoxFit.cover)),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 40.0, vertical: 80.0),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Text("Blogieee",
-                style: TextStyle(
-                  fontSize: 38.0,
-                  fontWeight: FontWeight.w600,
+              Container(
+                child: Column(
+                  children: [
+                    Text("Blogieee",
+                      style: GoogleFonts.amaticSc(textStyle: TextStyle(fontSize: 46.0)),
+                    ),
+                    SizedBox(height: 16),
+                    AnimatedTextKit(
+                      animatedTexts: [
+                        TypewriterAnimatedText("Great Stories for Great People",
+                          textAlign: TextAlign.center,
+                          textStyle: GoogleFonts.montserrat(textStyle: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w300)),
+                          speed: const Duration(milliseconds: 100),
+                        ),
+                      ], 
+                      totalRepeatCount: 1,
+                    ),
+                  ],
                 ),
               ),
-              SizedBox(height: MediaQuery.of(context).size.height/12),
-              Text("Great Stories for Great People",
-              textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 26.0,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-              SizedBox(height: 40.0),
-              boxContainer("assets/google.png", "Sign up with Google", null),
-              boxContainer("assets/fb.png", "Sign up with Facebook", onFBLogin),
-              boxContainer("assets/icons8-important-mail-96 (4) - Copy.png", "Sign up with Email", onEmailClick),
-              SizedBox(height: 10.0),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+              SizedBox(height: MediaQuery.of(context).size.height/3),
+              Column(
                 children: [
-                  Text("Already have an account?",
-                  style: TextStyle(fontSize: 14.0, color: Colors.black54),
-                  ),
-                  SizedBox(width: 5.0),
-                  InkWell(
-                    onTap: (){
-                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => SigninScreen()));
-                    },
-                    child: Text("Sign In",
-                    style: TextStyle(color: Colors.black87, fontWeight: FontWeight.bold),
+                  OutlinedButton.icon(
+                    onPressed: onEmailClick,
+                    icon: Padding(
+                      padding: const EdgeInsets.fromLTRB(10, 10, 5, 10),
+                      child: Icon(Icons.email, color: Colors.white),
+                    ),
+                    label: Padding(
+                      padding: const EdgeInsets.fromLTRB(10, 10, 5, 10),
+                      child: Text('Sign up with Email', style: GoogleFonts.montserrat(fontSize: 16.0, color: Colors.white),),
+                    ),
+                    style: ButtonStyle(
+                      shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0),),),
+                      side: MaterialStateProperty.all(BorderSide(color: Colors.blueAccent)),
                     ),
                   ),
+                  SizedBox(height: 10.0),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("Already have an account?",
+                      style: GoogleFonts.montserrat(fontSize: 14.0, color: Colors.white),
+                      ),
+                      SizedBox(width: 5.0),
+                      InkWell(
+                        onTap: (){
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => SigninScreen()));
+                        },
+                        child: Text("Sign In",
+                        style: GoogleFonts.montserrat(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 14.0),
+                        ),
+                      ),
+                    ],
+                  )
                 ],
-              )
+              ),
             ],
           ),
         ),
       ),
     );
-  }
-
-  onFBLogin() async{
-    print("is it working");
-    final result = await facebookLogin.logIn(['email']);
-    switch(result.status){
-      case FacebookLoginStatus.loggedIn:
-        final token = result.accessToken.token;
-        final response = await http.get(Uri.parse("https://graph.facebook.com/v2.12/me?fields=name,picture,email&access_token=$token"));
-        final data1 = JSON.jsonDecode(response.body);
-        print(data1);
-        setState(() {
-          _isLogin = true;
-          data = data1;
-        });
-        break;
-      case FacebookLoginStatus.cancelledByUser:
-        setState(() {
-          _isLogin = false;
-        });
-        break;
-      case FacebookLoginStatus.error:
-        setState(() {
-          _isLogin = false;
-        });
-        break;
-    }
-    if(_isLogin){
-      print('true');
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) => LandingPage()));
-    }
   }
 
   onEmailClick(){
