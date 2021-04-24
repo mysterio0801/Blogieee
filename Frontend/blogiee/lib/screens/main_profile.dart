@@ -1,6 +1,7 @@
 import 'package:blogiee/Blog/blogs.dart';
 import 'package:blogiee/NetworkHandler.dart';
 import 'package:blogiee/models/profileModel.dart';
+import 'package:blogiee/screens/update_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
@@ -38,7 +39,7 @@ class _MainProfileState extends State<MainProfile> {
           IconButton(
             icon: Icon(Icons.edit), 
             onPressed: (){
-              
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => UpdateProfile()));
             },
             color: Colors.black,
           ),

@@ -67,6 +67,7 @@ class _SigninScreenState extends State<SigninScreen> {
                 Column(
                   children: [
                     TextFormField(
+                      style: TextStyle(color: Colors.white),
                       controller: _usernameController,
                       decoration: InputDecoration(
                         errorText: validate ? null : errorText,
@@ -76,6 +77,7 @@ class _SigninScreenState extends State<SigninScreen> {
                     ),
                     SizedBox(height: 20.0),
                 TextFormField(
+                  style: TextStyle(color: Colors.white),
                   controller: _passwordController,
                   obscureText: _isPasswordVisible,
                   decoration: InputDecoration(

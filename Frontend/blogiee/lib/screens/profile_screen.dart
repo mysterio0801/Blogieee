@@ -41,12 +41,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  // Widget profile(){
-  //   return Center(
-  //     child: Text("Profile Hai")
-  //   );
-  // }
-
   Widget button(){
     return Padding(
       padding: const EdgeInsets.all(40.0),

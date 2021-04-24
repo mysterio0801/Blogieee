@@ -5,6 +5,7 @@ import 'package:blogiee/screens/profile_screen.dart';
 import 'package:blogiee/screens/welcome_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class LandingPage extends StatefulWidget {
   @override
@@ -17,7 +18,7 @@ class _LandingPageState extends State<LandingPage> {
   List<Widget> widgets = [HomeScreen(), ProfileScreen()];
   List<String> title = ["Home Page", "My Profile"];
   final storage = new FlutterSecureStorage();
-  Widget profilePhoto = CircleAvatar(radius: 65);
+  Widget profilePhoto = CircleAvatar(radius: 65.0);
   String username = "";
 
   @override
@@ -41,7 +42,7 @@ class _LandingPageState extends State<LandingPage> {
     }
     else{
       setState(() {
-        profilePhoto = CircleAvatar(radius: 65);
+        profilePhoto = CircleAvatar(radius: 65.0);
       });
     }
   }
@@ -53,15 +54,11 @@ class _LandingPageState extends State<LandingPage> {
         child: ListView(
           children: [
             DrawerHeader(
-              child: Column(
+              child: Row(
                 children: [
-                  Row(
-                    children: [
-                      profilePhoto,
-                      SizedBox(width: 15.0),
-                      Text("$username", style: TextStyle(fontSize: 16.0),),
-                    ],
-                  ),
+                  profilePhoto,
+                  SizedBox(width: 15.0),
+                  Text("$username", style: TextStyle(fontSize: 15.0)),
                 ],
               ),
             ),
@@ -97,7 +94,7 @@ class _LandingPageState extends State<LandingPage> {
       ),
       appBar: AppBar(
         backgroundColor: Colors.teal,
-        title: Text(title[currentState]),
+        title: Text(title[currentState],style: GoogleFonts.montserrat(fontSize: 18.0, fontWeight: FontWeight.w400)),
         centerTitle: true,
         actions: [
           IconButton(

@@ -57,6 +57,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 Column(
                   children: [
                     TextFormField(
+                      style: TextStyle(color: Colors.white),
                       controller: _usernameController,
                       decoration: InputDecoration(
                         errorText: validate ? null : errorText,
@@ -66,6 +67,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     ),
                     SizedBox(height: 20.0),
                     TextFormField(
+                      style: TextStyle(color: Colors.white),
                       controller: _emailController,
                       validator: (value)
                       {
@@ -84,6 +86,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     ),
                     SizedBox(height: 20.0),
                     TextFormField(
+                      style: TextStyle(color: Colors.white),
                       controller: _passwordController,
                       validator: (value)
                       {

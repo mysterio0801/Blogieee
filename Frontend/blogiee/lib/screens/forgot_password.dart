@@ -7,6 +7,7 @@ import 'package:blogiee/screens/welcome_screen.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 bool _isPasswordVisible = true;
 
@@ -35,7 +36,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(color: Colors.green[100]),
+        decoration: BoxDecoration(color: Colors.white),
         child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Form(
@@ -43,8 +44,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text("Forgot Password",
-                  style: TextStyle(fontSize: 26.0, fontWeight: FontWeight.w500),
+                Image(image: AssetImage("assets/cute-panda-forgot-password-vector-icon-illustration_138676-419.jpg")),
+                Text("Oops! Looks like you are lost..",
+                  style: GoogleFonts.montserrat(fontSize: 18.0, fontWeight: FontWeight.w400),
                 ),
                 SizedBox(height: 80.0),
                 TextFormField(
@@ -52,6 +54,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   decoration: InputDecoration(
                     errorText: validate ? null : errorText,
                     hintText: "Username",
+                    hintStyle: TextStyle(color: Colors.grey[700]),
                     prefixIcon: Icon(Icons.person),
                   ),
                 ),
@@ -62,6 +65,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   decoration: InputDecoration(
                     errorText: validate ? null: errorText,
                     hintText: "New Password",
+                    hintStyle: TextStyle(color: Colors.grey[700]),
                     prefixIcon: Icon(Icons.lock_outline),
                     suffixIcon: IconButton(
                       icon: Icon(
@@ -75,7 +79,11 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   ),
                 ),
                 SizedBox(height: 40.0),
-                ElevatedButton(
+                OutlinedButton(
+                  style: ButtonStyle(
+                    shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0),),),
+                    backgroundColor: MaterialStateProperty.all(Colors.blue),
+                  ),
                   onPressed: () async{
                     Map<String, String> data = {
                       "password" : _passwordController.text,
@@ -89,11 +97,11 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   },
                   child: circular ? CircularProgressIndicator() : Padding(
                     padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 10.0),
-                    child: Text("Update Password", 
-                        style: TextStyle(
+                    child: Text("Reset Password", 
+                        style: GoogleFonts.montserrat(
                           color: Colors.white,
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.bold,
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
                     ),

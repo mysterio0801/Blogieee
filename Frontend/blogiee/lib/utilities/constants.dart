@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class OurTheme {
   ThemeData buildTheme() {
@@ -28,6 +29,10 @@ class OurTheme {
           borderRadius: BorderRadius.circular(40.0),
         ),
       ),
+      textTheme: TextTheme(
+        headline6: GoogleFonts.montserrat(fontSize: 18.0, fontWeight: FontWeight.w400),
+        bodyText1: GoogleFonts.montserrat(fontSize: 16.0),
+      )
     );
   }
 }
