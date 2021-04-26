@@ -93,7 +93,7 @@ class _LandingPageState extends State<LandingPage> {
         ),
       ),
       appBar: AppBar(
-        backgroundColor: Colors.teal,
+        backgroundColor: Colors.blueAccent,
         title: Text(title[currentState],style: GoogleFonts.montserrat(fontSize: 18.0, fontWeight: FontWeight.w400)),
         centerTitle: true,
         actions: [
@@ -111,11 +111,11 @@ class _LandingPageState extends State<LandingPage> {
           '+', 
           style: TextStyle(fontSize: 35.0),
         ),
-        backgroundColor: Colors.teal,
+        backgroundColor: Colors.blueAccent,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
-        color: Colors.teal,
+        color: Colors.blueAccent,
         shape: CircularNotchedRectangle(),
         notchMargin: 12,
         child: Container(

@@ -101,7 +101,7 @@ class _SigninScreenState extends State<SigninScreen> {
                   children: [
                     InkWell(
                       onTap:  (){
-                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ForgotPasswordScreen()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => ForgotPasswordScreen()));
                       },
                       child: Text(
                         "Forgot Password?",

@@ -33,6 +33,16 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.close, color: Colors.black54),
+          onPressed: (){
+            Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => SigninScreen()), (route) => false);
+          },
+        ),
+      ),
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
