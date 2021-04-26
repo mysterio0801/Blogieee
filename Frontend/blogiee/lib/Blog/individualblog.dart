@@ -1,5 +1,7 @@
 import 'package:blogiee/NetworkHandler.dart';
 import 'package:blogiee/models/addBlogModels.dart';
+import 'package:blogiee/screens/landing_page.dart';
+import 'package:blogiee/screens/main_profile.dart';
 import 'package:flutter/material.dart';
 
 class IndividualBlog extends StatelessWidget {
@@ -13,6 +15,15 @@ class IndividualBlog extends StatelessWidget {
         title: Text("Blogiee"),
         centerTitle: true,
         backgroundColor: Colors.teal,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.delete), 
+            onPressed: () {
+              networkHandler.delete("/blogPost/delete/${addBlogModel.id}");
+              Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => LandingPage()), (route) => false);
+            }
+          ),
+        ],
       ),
       body: ListView(
         children: [
